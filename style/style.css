@@ -52,3 +52,14 @@ td:hover .last-tag-header {
 	position: absolute;
 	right: 10px;
 }
+
+.tweetbox {
+	position: absolute;
+	top: -15px;
+	height: 10px;
+	width: 10%;
+	background: #EB5D59;
+	border: 1px solid white;
+	padding: 0px;
+	margin: -1px;
+}
