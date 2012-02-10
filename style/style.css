@@ -1,6 +1,6 @@
 body {
 	background: #272822;
-	color: #eee;
+	/*color: #eee;*/
 }
 
 table {
@@ -33,17 +33,23 @@ td:hover {
 
 .tag-header {
 	color: #eee;
+	border-radius: 5px;
+	padding: 5px;
+	margin: -5px;
 }
 
 td:hover .tag-header {
-	position: fixed;
+	position: absolute;
 	background: #333;
 }
 
+.spacer {
+	height: 10px;
+}
 td:hover .spacer {
-	height: 36px;
+	height: 46px;
 }
 td:hover .last-tag-header {
 	position: absolute;
-	right: 0px;
+	right: 10px;
 }
