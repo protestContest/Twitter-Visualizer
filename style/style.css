@@ -20,7 +20,6 @@ td {
 	width: 10%;
 	height: 8%;
 	overflow: hidden;
-	text-overflow: ellipsis;
 }
 
 #info-row td {	
