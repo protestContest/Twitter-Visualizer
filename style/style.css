@@ -53,6 +53,7 @@ td:hover .last-tag-header {
 }
 
 .tweetbox {
+	color: #EB5D59;
 	position: absolute;
 	top: -10px;
 	height: 10px;
@@ -61,6 +62,19 @@ td:hover .last-tag-header {
 	border: 1px solid white;
 	padding: 0px;
 	/*margin: -1px;*/
+	overflow: hidden;
+}
+.tweetbox:hover {
+	color: #eee;
+	position: relative;
+	left: -10px;
+	top: -10px;
+	width: 700px;
+	height: 50px;
+	background: #333;
+	border-radius: 5px;
+	padding: 5px;
+	z-index: 1;
 }
 
 .tweetbox.last {
