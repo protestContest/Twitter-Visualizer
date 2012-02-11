@@ -46,17 +46,18 @@ function registerTweets(s, i, query) {
 		if (i === 9)
 			new_tweetbox.addClass('last');
 		else
-			new_tweetbox.css('left', Math.floor(i*$(document).width()*0.1));
-
-		new_tweetbox.css('width', Math.floor($(document).width()*0.1));
+			new_tweetbox.css('left', Math.floor(i*$(window).width()*0.1));
+		
 		s.tweets.push(new_tweetbox);
 
-		dh = Math.round($(document).height() - $('#info-row').height() - 10*s.tweets.length + 10);
-		// console.log(s.tweets.length);
+		var dh = Math.round($(document).height() - $('#info-row').height() - 10*s.tweets.length + 10);
+
 		new_tweetbox.appendTo($('.content')).animate({
 			top: '+=' + dh
 		});
 
+		if (new_tweetbox.position().left + 300 > $(window).width())
+			new_tweetbox.addClass('rightedge');
 
 
 		// console.log(tweet.text);
