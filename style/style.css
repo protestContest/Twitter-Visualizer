@@ -22,7 +22,7 @@ td {
 }
 
 #info-row td {	
-	min-height: 100px;
+	height: 100px;
 }
 
 td:hover {
