@@ -27,9 +27,10 @@ function init_spotters(spotters) {
 		var query = $('.tag-header')[i].textContent;
 
 		var s = new Spotter("twitter.search",
-			{q:query, period:10},
+			{q:query, period:100},
 			{buffer:true, bufferTimeout:1000});
 		s.tweets = [];
+		s.maxtweets = Math.floor(0.1 * ($(document).height() - $('#info-row').height()));
 			
 		registerTweets(s, i, query);
 		s.start();
@@ -42,10 +43,16 @@ function registerTweets(s, i, query) {
 	
 	s.register(function(tweet) {
 		var new_tweetbox = $("<div class=tweetbox>&nbsp;</div>");
-		new_tweetbox.css('left', i*$(document).width()*0.1);
+		if (i === 9) {
+			new_tweetbox.addClass('last');
+			new_tweetbox.css('width', $(document).width()*0.1);
+		}
+		else {
+			new_tweetbox.css('left', Math.floor(i*$(document).width()*0.1));
+		}
 		s.tweets.push(new_tweetbox);
 
-		dh = $(document).height() - $('#info-row').height() - 10*s.tweets.length;
+		dh = Math.round($(document).height() - $('#info-row').height() - 10*s.tweets.length + 10);
 		// console.log(s.tweets.length);
 		new_tweetbox.appendTo($('.content')).animate({
 			top: '+=' + dh

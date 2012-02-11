@@ -1,6 +1,5 @@
 body {
 	background: #272822;
-	/*color: #eee;*/
 }
 
 table {
@@ -55,11 +54,15 @@ td:hover .last-tag-header {
 
 .tweetbox {
 	position: absolute;
-	top: -15px;
+	top: -10px;
 	height: 10px;
 	width: 10%;
 	background: #EB5D59;
 	border: 1px solid white;
 	padding: 0px;
-	margin: -1px;
+	/*margin: -1px;*/
+}
+
+.tweetbox.last {
+	right: 0px;
 }
