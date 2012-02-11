@@ -56,9 +56,20 @@ function registerTweets(s, i, query) {
 			top: '+=' + dh
 		});
 
-		if (new_tweetbox.position().left + 300 > $(window).width())
+		if (new_tweetbox.position().left + 300 > $(window).width()) {
 			new_tweetbox.addClass('rightedge');
+			
+			var left = new_tweetbox.position().left;
 
+			$('.rightedge').hover(function() {
+				$(this).css('left', '');
+				$(this).css('right', '0px');
+			},
+			function() {
+				$(this).css('right', '');
+				$(this).css('left', left + 'px');
+			});
+		}
 
 		// console.log(tweet.text);
 	
