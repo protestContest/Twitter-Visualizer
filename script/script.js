@@ -45,7 +45,7 @@ function init_spotters(spotters) {
 		var query = $('.tag-header')[i].textContent;
 
 		spotters[i] = new Spotter("twitter.search",
-			{q:query, period:100},
+			{q:query, period:10},
 			{buffer:true, bufferTimeout:1000});
 			
 		spotters[i].query = query;
@@ -86,7 +86,7 @@ function registerTweets(s, i, query) {
 		// add tweetbox and slide it down to position
 		new_tweetbox.appendTo($('.content')).animate({
 			bottom: $('#info-row').height() + 10*s.tweets.length - 10 + 'px'
-		});
+		}, 3000);
 
 		var left = new_tweetbox.position().left;
 
@@ -101,14 +101,21 @@ function registerTweets(s, i, query) {
 			function() {
 				$(this).css('right', '');
 				$(this).css('left', left + 'px');
-				console.log($(this).css('left'));
+				// console.log($(this).css('left'));
 			});
 		}
 
 		// limit tweets to what can fit on the screen
 		if (s.tweets.length > s.maxtweets) {
 			lastTweet = s.tweets.shift();
-			lastTweet.slideUp(function() {
+
+			for (var j = 0; j < s.tweets.length - 1; j++) {
+				s.tweets[i].animate({
+					bottom: '-=10'
+				});
+			}
+			
+			lastTweet.slideDown(function() {
 				lastTweet.remove();
 			});
 		}
