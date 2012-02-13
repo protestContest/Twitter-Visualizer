@@ -1,11 +1,17 @@
 var spotters = [10];
+
 $(document).ready(function() {
 	var cur_label;	// based on last button pressed
 	var cur_col;	// based on last button pressed
 	
-
 	// sets up default spotters
 	init_spotters(spotters);
+
+	// show about modal initially, hide after some seconds
+	$('#about-modal').modal('show');
+	setTimeout("$('#about-modal').modal('hide');", 20000);
+
+	/***** CALLBACKS *****/
 
 	// brings up modal with info of clicked cell
 	$('button').click(function() {
@@ -13,6 +19,11 @@ $(document).ready(function() {
 		cur_col = $(this).parent().index();
 		$('#name_header').text(cur_label.text());
 		$('#modal-input').val(cur_label.text());
+	});
+
+	// brings up about modal
+	$('#about-button').click(function() {
+		$('#about-modal').modal('show');
 	});
 
 	// changes column info according to modal
@@ -23,7 +34,7 @@ $(document).ready(function() {
 		// stop the previous spotter handling this column
 		spotters[cur_col].stop();
 
-		// // make a new one
+		// make a new one
 		spotters[cur_col] = new Spotter("twitter.search",
 			{q:modal_input.val(), period:10},
 			{buffer:true, bufferTimeout:1000});
@@ -43,13 +54,15 @@ $(document).ready(function() {
 		$('#modal-from-dom').modal('hide');
 	});
 
-	// closes modal
+	// closes modals
 	$('.modal-footer .btn.cancel').click(function() {
 		$('#modal-from-dom').modal('hide');
+		$('#about-modal').modal('hide');
 	});
 
 });
 
+// set up spotters with defaults
 function init_spotters(spotters) {
 	for (var i = 0; i < 10; i++) {
 		var query = $('.tag-header')[i].textContent;
@@ -77,6 +90,7 @@ function registerTweets(s, i, query) {
 		if (s.query != query)
 			return;
 
+		// keep a count of total tweets received
 		s.count++;
 
 		// makes new  box representing tweet
