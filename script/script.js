@@ -1,7 +1,8 @@
+var spotters = [10];
 $(document).ready(function() {
 	var cur_label;	// based on last button pressed
 	var cur_col;	// based on last button pressed
-	var spotters = [10];
+	
 
 	// sets up default spotters
 	init_spotters(spotters);
@@ -22,11 +23,12 @@ $(document).ready(function() {
 		// stop the previous spotter handling this column
 		spotters[cur_col].stop();
 
-		// make a new one
+		// // make a new one
 		spotters[cur_col] = new Spotter("twitter.search",
 			{q:modal_input.val(), period:10},
 			{buffer:true, bufferTimeout:1000});
 		spotters[cur_col].tweets = [];
+		spotters[cur_col].query = modal_input.val();
 
 		registerTweets(spotters[cur_col], cur_col, modal_input.val());
 		spotters[cur_col].start();
