@@ -27,7 +27,7 @@ $(document).ready(function() {
 	});
 
 	// changes column info according to modal
-	$('.modal-footer .btn.primary').click(function() {
+	$('#modal-from-dom .modal-footer .btn.primary').click(function() {
 		var modal_input = $('#modal-input');
 		cur_label.text(modal_input.val());
 
@@ -41,9 +41,13 @@ $(document).ready(function() {
 
 		spotters[cur_col].query = modal_input.val();
 		spotters[cur_col].tweets = [];
-		spotters[cur_col].count = 0;
-		spotters[cur_col].maxed = false;
-		spotters[cur_col].maxtweets = Math.floor(0.1 * ($(document).height() - $('#info-row').height())) - 5;
+		spotters[cur_col].count = 0;	// total tweets received
+		spotters[cur_col].maxed = false;	// whether the column is full
+		// number of tweets that would fill the column
+		spotters[cur_col].maxtweets = Math.floor(0.1 * ($(document).height() - $('#info-row').height())) - 2;
+
+		// hide the counter if it's visible
+		$($('.counter')[cur_col]).css('visibility', 'hidden');
 
 		registerTweets(spotters[cur_col], cur_col, modal_input.val());
 		spotters[cur_col].start();
@@ -52,6 +56,10 @@ $(document).ready(function() {
 		$('.col' + cur_col).remove();
 
 		$('#modal-from-dom').modal('hide');
+	});
+
+	$('#about-modal .btn.primary').click(function() {
+		init_spotters(spotters);
 	});
 
 	// closes modals
@@ -75,11 +83,22 @@ function init_spotters(spotters) {
 		spotters[i].tweets = [];
 		spotters[i].count = 0;
 		spotters[i].maxed = false;
-		spotters[i].maxtweets = Math.floor(0.1 * ($(document).height() - $('#info-row').height())) - 5;
+		spotters[i].maxtweets = Math.floor(0.1 * ($(document).height() - $('#info-row').height())) - 2;
+
+		$('.counter').css('visibility', 'hidden');
 			
 		registerTweets(spotters[i], i, spotters[i].query);
 		spotters[i].start();
+
+		$('.col' + i).remove();
 	}
+}
+
+function reset_spotters(spotters) {
+	for (var i = 0; i < 10; i++) {
+		spotters[i].stop();
+	}
+	init_spotters(spotters);
 }
 
 //  deals with incoming tweets
@@ -127,9 +146,26 @@ function registerTweets(s, i, query) {
 			// show counter if it isn't shown
 			if (!s.maxed) {
 				s.maxed = true;
+				// $($('.counter')[i]).css('left', )
 				$($('.counter')[i]).css('visibility', 'visible');
 			}
+
+			// update counter text
 			$($('.counter')[i]).text(s.count);
+
+			// move counter up stack
+			if (s.maxed) {
+				var maxheight = $(window).height() - 70;
+
+				// 10 px for every screen of tweets
+				// var bottom = Math.floor((s.count/(0.1*s.maxtweets) + $('#info-row').height() ));
+				var bottom = Math.floor((s.count)+700);
+
+				if (bottom < maxheight)
+					$($('.counter')[i]).css('bottom', bottom + 'px');
+				else
+					$($('.counter')[i]).css('bottom', maxheight + 'px');
+			}
 		}
 
 
