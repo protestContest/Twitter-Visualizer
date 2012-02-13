@@ -50,7 +50,7 @@ function init_spotters(spotters) {
 			
 		spotters[i].query = query;
 		spotters[i].tweets = [];
-		spotters[i].maxtweets = Math.floor(0.1 * ($(document).height() - $('#info-row').height()));
+		spotters[i].maxtweets = 10;//Math.floor(0.1 * ($(document).height() - $('#info-row').height()));
 			
 		registerTweets(spotters[i], i, spotters[i].query);
 		spotters[i].start();
@@ -69,11 +69,6 @@ function registerTweets(s, i, query) {
 
 		// makes new  box representing tweet
 		var new_tweetbox = $("<div class='tweetbox col" + i + "'>"+ tweet.text +"</div>");
-
-		// if (i === 9)
-			// new_tweetbox.addClass('last');
-		// else
-			// new_tweetbox.css('left', Math.floor(i*$(window).width()*0.1));
 		
 		// add tweet to our internal array		
 		s.tweets.push(new_tweetbox);
@@ -82,7 +77,7 @@ function registerTweets(s, i, query) {
 			$('#info-row').height() - 10*s.tweets.length + 10);
 		dh = $('#info-row').height();
 
-		new_tweetbox.css('bottom', '1000px');
+		new_tweetbox.css('bottom', $(window).height() + 20 + 'px');
 		// add tweetbox and slide it down to position
 		new_tweetbox.appendTo($('.content')).animate({
 			bottom: $('#info-row').height() + 10*s.tweets.length - 10 + 'px'
@@ -93,32 +88,27 @@ function registerTweets(s, i, query) {
 		// register some rightedge stuff, so it doesn't go off the screen
 		if (left + 310 > $(window).width()) {
 			new_tweetbox.addClass('rightedge');
-
-			// $('.rightedge:not(.last)').hover(function() {
-			// 	var left = $(this).css('left');
-			// 	$(this).css('left', '');
-			// 	$(this).css('right', '0px');
-			// },
-			// function() {
-			// 	$(this).css('right', '');
-			// 	$(this).css('left', left + 'px');
-			// 	// console.log($(this).css('left'));
-			// });
 		}
 
 		// limit tweets to what can fit on the screen
 		if (s.tweets.length > s.maxtweets) {
-			lastTweet = s.tweets.shift();
-
-			for (var j = 0; j < s.tweets.length - 1; j++) {
-				s.tweets[i].animate({
-					bottom: s.tweets[i].offset().bottom - 10 + 'px'
-				}, 10);
-			}
-
-			lastTweet.slideDown(function() {
-				lastTweet.remove();
+			$('.col' + i).animate({
+				bottom: '-=10' + 'px'
 			});
+			lastTweet = s.tweets.shift();
+			lastTweet.remove();
+
+		// 	move_column_down(i);
+
+		// 	// for (var j = 0; j < s.tweets.length; j++) {
+		// 	// 	s.tweets[i].css('background', 'blue');
+		// 	// 	var bottom = $(window).height() - s.tweets[i].offsetTop;
+		// 	// 	s.tweets[i].css('bottom', bottom - 10 + 'px');
+		// 	// }
+
+		// 	lastTweet.slideDown(function() {
+		// 		lastTweet.remove();
+		// 	});
 		}
 
 
