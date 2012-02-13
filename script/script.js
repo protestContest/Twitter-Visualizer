@@ -27,8 +27,12 @@ $(document).ready(function() {
 		spotters[cur_col] = new Spotter("twitter.search",
 			{q:modal_input.val(), period:10},
 			{buffer:true, bufferTimeout:1000});
-		spotters[cur_col].tweets = [];
+
 		spotters[cur_col].query = modal_input.val();
+		spotters[cur_col].tweets = [];
+		spotters[cur_col].count = 0;
+		spotters[cur_col].maxed = false;
+		spotters[cur_col].maxtweets = Math.floor(0.1 * ($(document).height() - $('#info-row').height())) - 5;
 
 		registerTweets(spotters[cur_col], cur_col, modal_input.val());
 		spotters[cur_col].start();
@@ -56,6 +60,8 @@ function init_spotters(spotters) {
 			
 		spotters[i].query = query;
 		spotters[i].tweets = [];
+		spotters[i].count = 0;
+		spotters[i].maxed = false;
 		spotters[i].maxtweets = Math.floor(0.1 * ($(document).height() - $('#info-row').height())) - 5;
 			
 		registerTweets(spotters[i], i, spotters[i].query);
@@ -70,6 +76,8 @@ function registerTweets(s, i, query) {
 		var query = $('.tag-header')[i].textContent;
 		if (s.query != query)
 			return;
+
+		s.count++;
 
 		// makes new  box representing tweet
 		var new_tweetbox = $("<div class='tweetbox col" + i + "'>"+ tweet.text +"</div>");
@@ -101,6 +109,14 @@ function registerTweets(s, i, query) {
 			});
 			lastTweet = s.tweets.shift();
 			lastTweet.remove();
+
+			// show counter if it isn't shown
+			if (!s.maxed) {
+				s.maxed = true;
+				$($('#counter-row td')[i]).append("<div class='counter'>" + s.count + "</div>");
+			} else {
+				$($('.counter')[i]).text(s.count);
+			}
 		}
 
 
