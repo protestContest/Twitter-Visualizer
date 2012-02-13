@@ -81,6 +81,9 @@ td:hover .last.tag-header {
 	z-index: 1000;
 	box-shadow: 5px 5px 5px #636657;
 }
+.col0.tweetbox:hover{
+	margin-left: 0px;
+}
 
 .tweetbox.last {
 	right: 0px;
@@ -108,6 +111,7 @@ td:hover .last.tag-header {
 	vertical-align: bottom;
 }
 .counter {
+	visibility: hidden;
 	position: relative;
 	left: 0px;
 	right: 0px;

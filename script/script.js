@@ -113,10 +113,9 @@ function registerTweets(s, i, query) {
 			// show counter if it isn't shown
 			if (!s.maxed) {
 				s.maxed = true;
-				$($('#counter-row td')[i]).append("<div class='counter'>" + s.count + "</div>");
-			} else {
-				$($('.counter')[i]).text(s.count);
+				$($('.counter')[i]).css('visibility', 'visible');
 			}
+			$($('.counter')[i]).text(s.count);
 		}
 
 
