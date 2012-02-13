@@ -1,6 +1,6 @@
 $(document).ready(function() {
-	var cur_label;
-	var cur_col;
+	var cur_label;	// based on last button pressed
+	var cur_col;	// based on last button pressed
 	var spotters = [10];
 
 	// sets up default spotters
@@ -19,7 +19,10 @@ $(document).ready(function() {
 		var modal_input = $('#modal-input');
 		cur_label.text(modal_input.val());
 
+		// stop the previous spotter handling this column
 		spotters[cur_col].stop();
+
+		// make a new one
 		spotters[cur_col] = new Spotter("twitter.search",
 			{q:modal_input.val(), period:10},
 			{buffer:true, bufferTimeout:1000});
@@ -28,6 +31,7 @@ $(document).ready(function() {
 		registerTweets(spotters[cur_col], cur_col, modal_input.val());
 		spotters[cur_col].start();
 
+		// clear the column
 		$('.col' + cur_col).remove();
 
 		$('#modal-from-dom').modal('hide');
@@ -50,7 +54,7 @@ function init_spotters(spotters) {
 			
 		spotters[i].query = query;
 		spotters[i].tweets = [];
-		spotters[i].maxtweets = 10;//Math.floor(0.1 * ($(document).height() - $('#info-row').height()));
+		spotters[i].maxtweets = Math.floor(0.1 * ($(document).height() - $('#info-row').height())) - 5;
 			
 		registerTweets(spotters[i], i, spotters[i].query);
 		spotters[i].start();
@@ -59,8 +63,6 @@ function init_spotters(spotters) {
 
 //  deals with incoming tweets
 function registerTweets(s, i, query) {
-	// var tweetarr = [];
-	// var numtweets = 0;
 	
 	s.register(function(tweet) {
 		var query = $('.tag-header')[i].textContent;
@@ -97,18 +99,6 @@ function registerTweets(s, i, query) {
 			});
 			lastTweet = s.tweets.shift();
 			lastTweet.remove();
-
-		// 	move_column_down(i);
-
-		// 	// for (var j = 0; j < s.tweets.length; j++) {
-		// 	// 	s.tweets[i].css('background', 'blue');
-		// 	// 	var bottom = $(window).height() - s.tweets[i].offsetTop;
-		// 	// 	s.tweets[i].css('bottom', bottom - 10 + 'px');
-		// 	// }
-
-		// 	lastTweet.slideDown(function() {
-		// 		lastTweet.remove();
-		// 	});
 		}
 
 

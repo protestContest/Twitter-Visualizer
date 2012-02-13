@@ -21,6 +21,14 @@ td {
 	overflow: hidden;
 }
 
+tr.top-row {
+	background-image: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#636657), to(#272822));
+	background-image: -webkit-linear-gradient(top, #636657, #272822); 
+	background-image: -moz-linear-gradient(top, #636657, #272822);
+	background-image: -ms-linear-gradient(top, #636657, #272822);
+	background-image: -o-linear-gradient(top, #636657, #272822);
+}
+
 #info-row td {	
 	height: 100px;
 }
