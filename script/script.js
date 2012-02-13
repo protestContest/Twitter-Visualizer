@@ -46,6 +46,9 @@ $(document).ready(function() {
 		spotters[cur_col].maxed = false;	// whether the column is full
 		// number of tweets that would fill the column
 		spotters[cur_col].maxtweets = Math.floor(0.1 * ($(document).height() - $('#info-row').height())) - 2;
+		spotters[cur_col].date = new Date();
+
+		dates[cur_col] = spotters[cur_col].date;
 
 		// hide the counter if it's visible
 		$($('.counter')[cur_col]).css('visibility', 'hidden');
@@ -65,6 +68,7 @@ $(document).ready(function() {
 
 	$('#about-modal .btn.secondary').click(function() {
 		reset_spotters(spotters);
+		$('#about-modal').modal('hide');
 	});
 	// close modal
 	$('#about-modal .btn.primary').click(function() {
@@ -82,7 +86,6 @@ function init_spotters(spotters) {
 			{q:query, period:10, lang:"en"},
 			{buffer:true, bufferTimeout:1000});
 			
-		spotters[i].query = query;
 		spotters[i].tweets = [];
 		spotters[i].count = 0;
 		spotters[i].maxed = false;
@@ -165,8 +168,7 @@ function registerTweets(s, i, query) {
 				var maxheight = $(window).height() - 80;
 
 				// 10 px for every screen of tweets
-				// var bottom = Math.floor((s.count/(0.1*s.maxtweets) + $('#info-row').height() ));
-				var bottom = Math.floor((s.count)+700);
+				var bottom = Math.floor((s.count/(0.1*s.maxtweets) + $('#info-row').height() ));
 
 				if (bottom < maxheight)
 					$($('.counter')[i]).css('bottom', bottom + 'px');
