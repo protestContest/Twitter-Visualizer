@@ -1,4 +1,5 @@
 var spotters = [10];
+var dates = [];
 
 $(document).ready(function() {
 	var cur_label;	// based on last button pressed
@@ -36,7 +37,7 @@ $(document).ready(function() {
 
 		// make a new one
 		spotters[cur_col] = new Spotter("twitter.search",
-			{q:modal_input.val(), period:10},
+			{q:modal_input.val(), period:10, lang:"en"},
 			{buffer:true, bufferTimeout:1000});
 
 		spotters[cur_col].query = modal_input.val();
@@ -57,16 +58,18 @@ $(document).ready(function() {
 
 		$('#modal-from-dom').modal('hide');
 	});
-
-	$('#about-modal .btn.primary').click(function() {
-		init_spotters(spotters);
-	});
-
-	// closes modals
-	$('.modal-footer .btn.cancel').click(function() {
+	// closes modal
+	$('#modal-from-dom .btn.cancel').click(function() {
 		$('#modal-from-dom').modal('hide');
-		$('#about-modal').modal('hide');
 	});
+
+	$('#about-modal .btn.secondary').click(function() {
+		reset_spotters(spotters);
+	});
+	// close modal
+	$('#about-modal .btn.primary').click(function() {
+		$('#about-modal').modal('hide');
+	})
 
 });
 
@@ -76,7 +79,7 @@ function init_spotters(spotters) {
 		var query = $('.tag-header')[i].textContent;
 
 		spotters[i] = new Spotter("twitter.search",
-			{q:query, period:10},
+			{q:query, period:10, lang:"en"},
 			{buffer:true, bufferTimeout:1000});
 			
 		spotters[i].query = query;
@@ -84,6 +87,9 @@ function init_spotters(spotters) {
 		spotters[i].count = 0;
 		spotters[i].maxed = false;
 		spotters[i].maxtweets = Math.floor(0.1 * ($(document).height() - $('#info-row').height())) - 2;
+		spotters[i].date = new Date();
+
+		dates[i] = spotters[i].date;
 
 		$('.counter').css('visibility', 'hidden');
 			
@@ -106,7 +112,8 @@ function registerTweets(s, i, query) {
 	
 	s.register(function(tweet) {
 		var query = $('.tag-header')[i].textContent;
-		if (s.query != query)
+		// if (s.query != query)
+		if (s.date != dates[i])
 			return;
 
 		// keep a count of total tweets received
@@ -155,7 +162,7 @@ function registerTweets(s, i, query) {
 
 			// move counter up stack
 			if (s.maxed) {
-				var maxheight = $(window).height() - 70;
+				var maxheight = $(window).height() - 80;
 
 				// 10 px for every screen of tweets
 				// var bottom = Math.floor((s.count/(0.1*s.maxtweets) + $('#info-row').height() ));
