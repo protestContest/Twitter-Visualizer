@@ -21,7 +21,7 @@ $(document).ready(function() {
 
 		spotters[cur_col].stop();
 		spotters[cur_col] = new Spotter("twitter.search",
-			{q:modal_input.val(), period:100},
+			{q:modal_input.val(), period:10},
 			{buffer:true, bufferTimeout:1000});
 		spotters[cur_col].tweets = [];
 
@@ -70,10 +70,10 @@ function registerTweets(s, i, query) {
 		// makes new  box representing tweet
 		var new_tweetbox = $("<div class='tweetbox col" + i + "'>"+ tweet.text +"</div>");
 
-		if (i === 9)
-			new_tweetbox.addClass('last');
-		else
-			new_tweetbox.css('left', Math.floor(i*$(window).width()*0.1));
+		// if (i === 9)
+			// new_tweetbox.addClass('last');
+		// else
+			// new_tweetbox.css('left', Math.floor(i*$(window).width()*0.1));
 		
 		// add tweet to our internal array		
 		s.tweets.push(new_tweetbox);
@@ -91,18 +91,19 @@ function registerTweets(s, i, query) {
 		var left = new_tweetbox.position().left;
 
 		// register some rightedge stuff, so it doesn't go off the screen
-		if (left + 300 > $(window).width()) {
+		if (left + 310 > $(window).width()) {
 			new_tweetbox.addClass('rightedge');
 
-			$('.rightedge:not(.last)').hover(function() {
-				$(this).css('left', '');
-				$(this).css('right', '0px');
-			},
-			function() {
-				$(this).css('right', '');
-				$(this).css('left', left + 'px');
-				// console.log($(this).css('left'));
-			});
+			// $('.rightedge:not(.last)').hover(function() {
+			// 	var left = $(this).css('left');
+			// 	$(this).css('left', '');
+			// 	$(this).css('right', '0px');
+			// },
+			// function() {
+			// 	$(this).css('right', '');
+			// 	$(this).css('left', left + 'px');
+			// 	// console.log($(this).css('left'));
+			// });
 		}
 
 		// limit tweets to what can fit on the screen
@@ -111,47 +112,15 @@ function registerTweets(s, i, query) {
 
 			for (var j = 0; j < s.tweets.length - 1; j++) {
 				s.tweets[i].animate({
-					bottom: '-=10'
-				});
+					bottom: s.tweets[i].offset().bottom - 10 + 'px'
+				}, 10);
 			}
-			
+
 			lastTweet.slideDown(function() {
 				lastTweet.remove();
 			});
 		}
 
-		// console.log(tweet.text);
-	
-		// only add stuff if this query (q) is the current query (query)
-		// if (q === query) {
-		// 	var profile_img = "<img class=profilepic src='" + tweet.profile_image_url + "' alt='profile image' />";
 
-		// 	// every other tweet in 'stripe' class, different background
-		// 	if (numtweets % 2 === 0)
-		// 		var stripe = 'stripe1';
-		// 	else
-		// 		var stripe = 'stripe2';
-
-		// 	// add tweet to page (and array)
-		// 	tweetarr.push(
-		// 		$("<div class='tweet " + stripe + " " + q + "'>" 
-		// 				+ profile_img 
-		// 				+ " <a href='http://www.twitter.com/#!/" + tweet.from_user + "'>" + tweet.from_user_name + ":</a> " 
-		// 				+ tweet.text + "</div>")
-		// 			.prependTo($("#tweets"))
-		// 			.hide()
-		// 			.slideDown()
-		// 	);
-
-		// 	numtweets++;
-			
-		// 	// limit to 10 tweets, throw away last one
-		// 	if (tweetarr.length > 10) {
-		// 		lastTweet = tweetarr.shift();
-		// 		lastTweet.slideUp(function() {
-		// 			lastTweet.remove();
-		// 		});
-		// 	}
-		// }
 	});
 }

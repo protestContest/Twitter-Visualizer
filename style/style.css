@@ -64,6 +64,7 @@ td:hover .last.tag-header {
 	overflow: hidden;
 }
 .tweetbox:hover {
+	left: +=5px;
 	color: #eee;
 	width: 300px;
 	height: 50px;
@@ -77,6 +78,18 @@ td:hover .last.tag-header {
 	right: 0px;
 }
 
-.rightedge:hover {
+.tweetbox.rightedge:hover {
+	left: auto;
 	right: 0px;
 }
+
+.col0 {left: 0px;}
+.col1 {left: 10%;}
+.col2 {left: 20%;}
+.col3 {left: 30%;}
+.col4 {left: 40%;}
+.col5 {left: 50%;}
+.col6 {left: 60%;}
+.col7 {left: 70%;}
+.col8 {left: 80%;}
+.col9 {right: 0px;}
