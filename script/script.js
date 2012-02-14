@@ -40,19 +40,20 @@ $(document).ready(function() {
 			{q:modal_input.val(), period:10, lang:"en"},
 			{buffer:true, bufferTimeout:1000});
 
-		spotters[cur_col].query = modal_input.val();
-		spotters[cur_col].tweets = [];
+		spotters[cur_col].tweets = [];	// holds actual tweets
 		spotters[cur_col].count = 0;	// total tweets received
 		spotters[cur_col].maxed = false;	// whether the column is full
 		// number of tweets that would fill the column
 		spotters[cur_col].maxtweets = Math.floor(0.1 * ($(document).height() - $('#info-row').height())) - 2;
-		spotters[cur_col].date = new Date();
+		spotters[cur_col].date = new Date();	// checked to make sure we show the right tweets
 
+		// updates global array for checking later
 		dates[cur_col] = spotters[cur_col].date;
 
 		// hide the counter if it's visible
 		$($('.counter')[cur_col]).css('visibility', 'hidden');
 
+		// set up to handle incoming tweets
 		registerTweets(spotters[cur_col], cur_col, modal_input.val());
 		spotters[cur_col].start();
 
@@ -61,16 +62,17 @@ $(document).ready(function() {
 
 		$('#modal-from-dom').modal('hide');
 	});
-	// closes modal
+	// change modal cancel button
 	$('#modal-from-dom .btn.cancel').click(function() {
 		$('#modal-from-dom').modal('hide');
 	});
 
+	// about reset button
 	$('#about-modal .btn.secondary').click(function() {
 		reset_spotters(spotters);
 		$('#about-modal').modal('hide');
 	});
-	// close modal
+	// about close button
 	$('#about-modal .btn.primary').click(function() {
 		$('#about-modal').modal('hide');
 	})
@@ -80,25 +82,31 @@ $(document).ready(function() {
 // set up spotters with defaults
 function init_spotters(spotters) {
 	for (var i = 0; i < 10; i++) {
+		// grab query from header in DOM
 		var query = $('.tag-header')[i].textContent;
 
 		spotters[i] = new Spotter("twitter.search",
 			{q:query, period:10, lang:"en"},
 			{buffer:true, bufferTimeout:1000});
 			
-		spotters[i].tweets = [];
-		spotters[i].count = 0;
-		spotters[i].maxed = false;
+		spotters[i].tweets = [];	// holds actual tweets
+		spotters[i].count = 0;		// total tweets received
+		spotters[i].maxed = false;	// whether column is full
+		// maximum number of tweets that will fit in one column
 		spotters[i].maxtweets = Math.floor(0.1 * ($(document).height() - $('#info-row').height())) - 2;
-		spotters[i].date = new Date();
+		spotters[i].date = new Date();	// used to make sure only current tweets are displayed
 
+		// update global array to check tweet freshness
 		dates[i] = spotters[i].date;
 
+		// counters start hidden
 		$('.counter').css('visibility', 'hidden');
 			
+		// set up to handle incoming tweets
 		registerTweets(spotters[i], i, spotters[i].query);
 		spotters[i].start();
 
+		// clear the column in case there's anything there
 		$('.col' + i).remove();
 	}
 }
@@ -114,8 +122,8 @@ function reset_spotters(spotters) {
 function registerTweets(s, i, query) {
 	
 	s.register(function(tweet) {
-		var query = $('.tag-header')[i].textContent;
-		// if (s.query != query)
+		// checks to make sure these tweets are from the current spotter,
+		// not a stale one we've stopped
 		if (s.date != dates[i])
 			return;
 
@@ -128,35 +136,33 @@ function registerTweets(s, i, query) {
 		// add tweet to our internal array		
 		s.tweets.push(new_tweetbox);
 
-		var dh = Math.round($(document).height() - 
-			$('#info-row').height() - 10*s.tweets.length + 10);
-		dh = $('#info-row').height();
-
+		// position tweetbox above visible screen initially
 		new_tweetbox.css('bottom', $(window).height() + 20 + 'px');
+
 		// add tweetbox and slide it down to position
 		new_tweetbox.appendTo($('.content')).animate({
 			bottom: $('#info-row').height() + 10*s.tweets.length - 10 + 'px'
 		}, 3000);
 
+		// check if hovering would cause tweet to go off screen.. deal with it in css
 		var left = new_tweetbox.position().left;
-
-		// register some rightedge stuff, so it doesn't go off the screen
 		if (left + 310 > $(window).width()) {
 			new_tweetbox.addClass('rightedge');
 		}
 
-		// limit tweets to what can fit on the screen
+		// if the column is full, we have to slide things down and move the counter
 		if (s.tweets.length > s.maxtweets) {
+			// slide down
 			$('.col' + i).animate({
 				bottom: '-=10' + 'px'
 			});
+			// throw away tweet
 			lastTweet = s.tweets.shift();
 			lastTweet.remove();
 
 			// show counter if it isn't shown
 			if (!s.maxed) {
 				s.maxed = true;
-				// $($('.counter')[i]).css('left', )
 				$($('.counter')[i]).css('visibility', 'visible');
 			}
 
@@ -165,6 +171,7 @@ function registerTweets(s, i, query) {
 
 			// move counter up stack
 			if (s.maxed) {
+				// maximum height counter can go - leaves space for a few tweetboxes
 				var maxheight = $(window).height() - 80;
 
 				// 10 px for every screen of tweets

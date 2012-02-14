@@ -29,6 +29,9 @@ tr.top-row {
 	background-image: -o-linear-gradient(top, #636657, #272822);
 }
 
+h4 {
+	font-weight: normal;
+}
 #info-row td {	
 	height: 100px;
 }
@@ -60,6 +63,8 @@ td:hover .last.tag-header {
 	right: 10px;
 }
 
+/* Tweetboxes */
+
 .tweetbox {
 	background: #4099FF;
 	color: rgba(0,0,0,0);
@@ -84,11 +89,9 @@ td:hover .last.tag-header {
 .col0.tweetbox:hover{
 	margin-left: 0px;
 }
-
 .tweetbox.last {
 	right: 0px;
 }
-
 .tweetbox.rightedge:hover {
 	left: auto;
 	right: 0px;
@@ -105,18 +108,17 @@ td:hover .last.tag-header {
 .col8 {left: 80%;}
 .col9 {right: 0px;}
 
+/* Counters */
+
 #counter-row td {
-	/*position: absolute;*/
 	text-align: center;
 	vertical-align: bottom;
 }
 .counter {
 	visibility: hidden;
 	position: absolute;
-	/*bottom: -5px;*/
 	width: 80px;
 	text-align: center;
-	/*vertical-align: middle;*/
 	background: rgba(39,40,34, 0.667);
 	color: #eee;
 	font-size: 24px;
@@ -124,6 +126,8 @@ td:hover .last.tag-header {
 	z-index: 1;
 	border-radius: 15px;
 }
+
+/* Modals */
 
 #about-button {
 	position: fixed;
@@ -144,4 +148,8 @@ td:hover .last.tag-header {
 
 .modal-footer p {
 	float: left;
+}
+
+#modal-from-dom .start-button {
+	display: none;
 }
