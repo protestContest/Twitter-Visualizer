@@ -66,6 +66,12 @@ $(document).ready(function() {
 	$('#modal-from-dom .btn.cancel').click(function() {
 		$('#modal-from-dom').modal('hide');
 	});
+	$('.modal').bind('keyup', function(e) {
+		if ( (e.keyCode || e.which) == 13)
+			$(this).children('.modal-footer').children('.btn.primary').click();
+		if ( (e.keyCode || e.which) == 27)
+			$(this).children('.modal-header').children('.close').click();
+	});
 
 	// about reset button
 	$('#about-modal .btn.secondary').click(function() {
